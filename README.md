@@ -12,9 +12,7 @@ Prototype for the Leap Product Manager assignment: a freemium, chat-first counse
 - **Paywall**: 3-month "application season" plan (₹449, default) or ₹99 first month, then ₹199
 - **Ask a parent to pay**: WhatsApp message with the student's own results and a UPI link
 - **UPI checkout** (simulated) and **success** screen with next steps
-- **PM notes panel** (desktop): why each screen exists, how it's measured, and a live log of funnel events
-
-Ad entry links: `/?ad=cgpa_uk` (student ad) and `/?ad=parent_cost` (parent ad).
+Ad entry links: `/?ad=cgpa_uk` (student ad) and `/?ad=parent_cost` (parent ad). Add `&debug=1` (or `/?debug=1`) to see the funnel events the app tracks.
 
 ## Architecture
 
@@ -26,7 +24,7 @@ Ad entry links: `/?ad=cgpa_uk` (student ad) and `/?ad=parent_cost` (parent ad).
 | Router | Regex intent rules (`lib/kb.ts`) | Small fast model (intent, language, risk) |
 | Answers | Claude Haiku via `/api/chat` with keyword retrieval | Same, with a vector index over counsellor-verified articles |
 | Human handoff | "Book free call" card | CRM ticket with profile + snapshot summary |
-| Analytics | In-memory events shown in the notes panel | Mixpanel / Amplitude / PostHog |
+| Analytics | In-memory events, visible with `?debug=1` | Mixpanel / Amplitude / PostHog |
 
 **Demo data:** all universities are fictional and costs are illustrative. The knowledge base must be re-verified before any real use. No real payment is taken.
 

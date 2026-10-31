@@ -7,7 +7,7 @@ import { BUDGET_LABEL, BUDGET_MAX, COUNTRIES, buildSnapshot, normaliseScore } fr
 import { track } from "@/lib/analytics";
 import { Back, Check, Lock, Send, Spinner } from "./Icons";
 import { AskParent, Checkout, Paywall, PLANS, SaveSheet, SnapshotScreen, Success, Welcome, type PlanId } from "./Screens";
-import { Notes } from "./Notes";
+import { DebugEvents } from "./Notes";
 
 type Screen = "welcome" | "chat" | "snapshot" | "paywall" | "askParent" | "checkout" | "success";
 type Step = "stage" | "course" | "country" | "score" | "ielts" | "budget" | "name" | "building" | "free";
@@ -37,6 +37,7 @@ const nid = () => `m${++idSeq}`;
 export default function App() {
   const params = useSearchParams();
   const ad = params.get("ad");
+  const debug = params.get("debug") === "1";
 
   const [screen, setScreen] = useState<Screen>("welcome");
   const [lang, setLang] = useState<Lang>("en");
@@ -343,9 +344,6 @@ export default function App() {
   };
 
   /* ---------------- Rendering helpers ---------------- */
-  const noteKey =
-    screen === "chat" ? (step === "building" ? "building" : snap ? "free" : "chat") : screen === "welcome" ? "welcome" : screen;
-
   const renderMsg = (m: ChatMsg) => {
     if (m.kind === "lock") {
       return (
@@ -415,7 +413,7 @@ export default function App() {
           </span>
         )}
         {m.text}
-        {m.source && <span className="src">Source: {m.source} · demo knowledge base</span>}
+        {m.source && <span className="src">Source: {m.source}</span>}
       </div>
     );
   };
@@ -769,7 +767,7 @@ export default function App() {
           />
         )}
       </main>
-      <Notes noteKey={noteKey} mode={aiMode} adParam={ad} />
+      {debug && <DebugEvents mode={aiMode} />}
     </div>
   );
 }
